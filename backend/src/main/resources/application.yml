@@ -7,7 +7,7 @@ springdoc:
 
   logging:
     level:
-      com.example.backend: DEBUG
+      pamiw.eepw.notesapp: DEBUG
 
 ---
 
