@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table
 @Setter
@@ -22,4 +25,7 @@ public class Note {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "note")
+    private List<Comment> comments = new ArrayList<>();
 }
