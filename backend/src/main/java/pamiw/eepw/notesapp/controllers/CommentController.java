@@ -25,11 +25,11 @@ public class CommentController {
             description = "Add comment to specified note",
             tags = {"post"})
     @PostMapping("/{id}/comment")
-    public void addComment(
+    public CommentDto addComment(
             @Parameter(description = "Note Id.", example = "1")
             @PathVariable Long id,
             @RequestBody @JsonView(value = Views.Put.class) CommentDto commentDto) {
         log.debug("Add comment to note with id: {}", id);
-        commentService.addComment(commentDto, id);
+        return commentService.addComment(commentDto, id);
     }
 }
