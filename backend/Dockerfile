@@ -5,7 +5,8 @@ WORKDIR app
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
-RUN ./mvnw #dependency:go-offline
+RUN dos2unix mvnw
+RUN ./mvnw dependency:go-offline
 
 COPY src src
 RUN ./mvnw package -DskipTests

@@ -23,8 +23,8 @@ public class Note {
     private String title;
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "note")
     private List<Comment> comments = new ArrayList<>();
