@@ -12,6 +12,8 @@ import pamiw.eepw.notesapp.mappings.CommentMapper;
 import pamiw.eepw.notesapp.mappings.NoteMapper;
 import pamiw.eepw.notesapp.repositories.CommentRepository;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -30,6 +32,24 @@ public class CommentService {
 
         Comment entity = commentMapper.toEntity(commentDto);
         entity.setNote(note);
+        entity = commentRepository.saveAndFlush(entity);
+        return commentMapper.toDto(entity);
+    }
+
+    public void deleteById(Long id) {
+        commentRepository.deleteById(id);
+    }
+
+    public CommentDto update(Long id, CommentDto commentDto, Long noteId) {
+        if (!Objects.equals(id, commentDto.getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment id does not match");
+        }
+
+        return save(commentDto, noteId);
+    }
+
+    public CommentDto save(CommentDto commentDto, Long noteId) {
+        Comment entity = commentMapper.toEntity(commentDto);
         entity = commentRepository.saveAndFlush(entity);
         return commentMapper.toDto(entity);
     }
