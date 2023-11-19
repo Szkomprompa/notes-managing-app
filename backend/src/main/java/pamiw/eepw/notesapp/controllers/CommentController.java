@@ -12,6 +12,8 @@ import pamiw.eepw.notesapp.dto.NoteDto;
 import pamiw.eepw.notesapp.dto.Views;
 import pamiw.eepw.notesapp.services.CommentService;
 
+import java.util.Collection;
+
 @Slf4j
 @RestController
 @Tag(name = "Comment", description = "Comments management APIs")
@@ -61,5 +63,29 @@ public class CommentController {
             @RequestBody @JsonView(value = Views.Put.class) CommentDto commentDto) {
         log.debug("Update comment with id: {}, from note with id: {}", commentId, id);
         return commentService.update(commentId, commentDto, id);
+    }
+
+    @Operation(
+            summary = "Find a comment by Id",
+            description = "Get a comment object by specifying its id.",
+            tags = {"get"})
+    @GetMapping("/comment/{commentId}")
+    public CommentDto findById(
+            @Parameter(description = "Comment Id.", example = "1")
+            @PathVariable Long commentId) {
+        log.debug("Find comment by id: {}", commentId);
+        return commentService.findById(commentId);
+    }
+
+    @Operation(
+            summary = "Find all comments by note Id",
+            description = "Get all comments by specifying note id.",
+            tags = {"get"})
+    @GetMapping("/{id}/comment")
+    public Collection<CommentDto> findAllCommentsByNoteId(
+            @Parameter(description = "Note Id.", example = "1")
+            @PathVariable Long id) {
+        log.debug("Find all comments by note id: {}", id);
+        return commentService.findAllCommentsByNoteId(id);
     }
 }

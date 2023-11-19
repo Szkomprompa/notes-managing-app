@@ -12,7 +12,9 @@ import pamiw.eepw.notesapp.mappings.CommentMapper;
 import pamiw.eepw.notesapp.mappings.NoteMapper;
 import pamiw.eepw.notesapp.repositories.CommentRepository;
 
+import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +54,17 @@ public class CommentService {
         Comment entity = commentMapper.toEntity(commentDto);
         entity = commentRepository.saveAndFlush(entity);
         return commentMapper.toDto(entity);
+    }
+
+    public CommentDto findById(Long commentId) {
+        return commentRepository.findById(commentId)
+                .map(commentMapper::toDto)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found"));
+    }
+
+    public Collection<CommentDto> findAllCommentsByNoteId(Long noteId) {
+        NoteDto noteDto = noteService.findById(noteId);
+        Note note = noteMapper.toEntity(noteDto);
+        return note.getComments().stream().map(commentMapper::toDto).collect(Collectors.toSet());
     }
 }
