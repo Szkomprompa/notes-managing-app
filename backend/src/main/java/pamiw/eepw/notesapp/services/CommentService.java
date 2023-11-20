@@ -11,10 +11,11 @@ import pamiw.eepw.notesapp.entities.Note;
 import pamiw.eepw.notesapp.mappings.CommentMapper;
 import pamiw.eepw.notesapp.mappings.NoteMapper;
 import pamiw.eepw.notesapp.repositories.CommentRepository;
+import pamiw.eepw.notesapp.repositories.NoteRepository;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class CommentService {
     private final NoteService noteService;
     private final CommentMapper commentMapper;
     private final NoteMapper noteMapper;
+    private final NoteRepository noteRepository;
 
     public CommentDto addComment(CommentDto commentDto, Long noteId) {
         NoteDto noteDto = noteService.findById(noteId);
@@ -32,9 +34,18 @@ public class CommentService {
         }
         Note note = noteMapper.toEntity(noteDto);
 
+        if (note.getComments() == null) {
+            note.setComments(new HashSet<>());
+        }
+
         Comment entity = commentMapper.toEntity(commentDto);
         entity.setNote(note);
+
+        note.getComments().add(entity);
+
+        noteRepository.saveAndFlush(note);
         entity = commentRepository.saveAndFlush(entity);
+
         return commentMapper.toDto(entity);
     }
 
@@ -42,15 +53,15 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-    public CommentDto update(Long id, CommentDto commentDto, Long noteId) {
+    public CommentDto update(Long id, CommentDto commentDto) {
         if (!Objects.equals(id, commentDto.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment id does not match");
         }
 
-        return save(commentDto, noteId);
+        return save(commentDto);
     }
 
-    public CommentDto save(CommentDto commentDto, Long noteId) {
+    public CommentDto save(CommentDto commentDto) {
         Comment entity = commentMapper.toEntity(commentDto);
         entity = commentRepository.saveAndFlush(entity);
         return commentMapper.toDto(entity);
@@ -62,9 +73,9 @@ public class CommentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found"));
     }
 
-    public Collection<CommentDto> findAllCommentsByNoteId(Long noteId) {
-        NoteDto noteDto = noteService.findById(noteId);
-        Note note = noteMapper.toEntity(noteDto);
-        return note.getComments().stream().map(commentMapper::toDto).collect(Collectors.toSet());
+    public Collection<CommentDto> findAll() {
+        return commentRepository.findAll().stream()
+                .map(commentMapper::toDto)
+                .toList();
     }
 }

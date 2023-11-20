@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import pamiw.eepw.notesapp.dto.NoteDto;
-import pamiw.eepw.notesapp.entities.Comment;
 import pamiw.eepw.notesapp.entities.Note;
 import pamiw.eepw.notesapp.mappings.NoteMapper;
 import pamiw.eepw.notesapp.repositories.NoteRepository;

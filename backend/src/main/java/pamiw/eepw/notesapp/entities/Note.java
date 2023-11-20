@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "note")
 @Setter
 @Getter
 @SuperBuilder
@@ -23,9 +24,6 @@ public class Note {
     private String title;
     private String content;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private User user;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "note")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "note", fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
 }
