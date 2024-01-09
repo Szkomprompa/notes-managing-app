@@ -101,4 +101,17 @@ public class CommentController {
         log.debug("Find all comments");
         return commentService.findAll();
     }
+
+    @Operation(
+            summary = "Find all comments by note id",
+            description = "Get all comments by note id.",
+            tags = {"get"})
+    @GetMapping("/note/{noteId}")
+    @JsonView(Views.Get.class)
+    public Collection<CommentDto> findAllByNoteId(
+            @Parameter(description = "Note Id.", example = "1")
+            @PathVariable Long noteId) {
+        log.debug("Find all comments by note id: {}", noteId);
+        return commentService.findAllByNoteId(noteId);
+    }
 }

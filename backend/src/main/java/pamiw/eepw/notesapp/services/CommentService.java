@@ -78,4 +78,10 @@ public class CommentService {
                 .map(commentMapper::toDto)
                 .toList();
     }
+
+    public Collection<CommentDto> findAllByNoteId(Long noteId) {
+        return commentRepository.findAllByNoteId(noteId).stream()
+                .map(commentMapper::toDto)
+                .toList();
+    }
 }
