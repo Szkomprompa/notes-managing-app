@@ -34,10 +34,6 @@ public class CommentService {
         }
         Note note = noteMapper.toEntity(noteDto);
 
-        if (note.getComments() == null) {
-            note.setComments(new HashSet<>());
-        }
-
         Comment entity = commentMapper.toEntity(commentDto);
         entity.setNote(note);
 
@@ -50,6 +46,8 @@ public class CommentService {
     }
 
     public void deleteById(Long id) {
+        Comment entity = commentMapper.toEntity(findById(id));
+        entity.getNote().getComments().remove(entity);
         commentRepository.deleteById(id);
     }
 
