@@ -24,7 +24,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ onAddComment }) => {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
             />
-            <Button variant="contained" color="primary" onClick={handleAddComment}>
+            <Button variant="contained" color="primary" onClick={handleAddComment} sx={{mt: 2}}>
                 Add Comment
             </Button>
         </Box>

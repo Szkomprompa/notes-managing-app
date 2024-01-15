@@ -1,57 +1,77 @@
-import {Box, Button, Modal, Paper, TextField, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Modal,
+    Paper,
+    TextField,
+    Typography
+} from "@mui/material";
 import React, {useState} from "react";
+import {createNote} from "@/services/noteService";
+import {NoteDtoWithoutId} from "@/types/note/noteTypes";
 
-const NoteForm = (props: {open: boolean, onClose: Function} ) => {
+
+const NoteForm = (props: {open: boolean, onClose: () => void} ) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
     const handleAddNote = () => {
-        // Implement logic to add the new note (e.g., make an API call to your backend)
         console.log('Adding note:', {title, content});
-        // Reset the form fields after adding the note
+
+        const note: NoteDtoWithoutId = {
+            title: title,
+            content: content,
+        }
+
+        createNote(note)
+            .then((createdNote) => console.log('Created Note:', createdNote))
+            .catch((error) => console.error('Error creating note:', error));
+
         setTitle('');
         setContent('');
-        // Close the modal after adding the note
+
         props.onClose();
     };
 
+
+
     return (
-        <Modal {...props}>
-            <Box sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
-                <Paper elevation={3} sx={{padding: 2, maxWidth: 400}}>
-                    <Typography variant="h6" mb={2}>
-                        Add New Note
-                    </Typography>
+        <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth>
+            <DialogTitle>Add New Note</DialogTitle>
+            <DialogContent>
+                <TextField
+                    label="Title"
+                    variant="outlined"
+                    fullWidth
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    margin="normal"
+                />
 
-                    {/* Note Title */}
-                    <TextField
-                        label="Title"
-                        variant="outlined"
-                        fullWidth
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        margin="normal"
-                    />
-
-                    {/* Note Content */}
-                    <TextField
-                        label="Content"
-                        variant="outlined"
-                        multiline
-                        rows={4}
-                        fullWidth
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        margin="normal"
-                    />
-
-                    {/* Add Note Button */}
-                    <Button variant="contained" color="primary" onClick={handleAddNote}>
-                        Add Note
-                    </Button>
-                </Paper>
-            </Box>
-        </Modal>
+                <TextField
+                    label="Content"
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    margin="normal"
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button variant="contained" color="primary" onClick={handleAddNote}>
+                    Add Note
+                </Button>
+                <Button variant="contained" color="primary" onClick={props.onClose}>
+                    Cancel
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

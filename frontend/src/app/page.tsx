@@ -16,7 +16,10 @@ import Header from "@/components/Header";
 import NoteCard from "@/components/NoteCard";
 
 const Home: React.FC = () => {
-    const notes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    const handleLogin = () => {
+        console.log('Login');
+    }
 
     return (
         <Container>
@@ -47,8 +50,8 @@ const Home: React.FC = () => {
                         spacing={2}
                         justifyContent="center"
                     >
-                        <Button variant="contained" color="secondary">Log in</Button>
-                        <Button variant="outlined">Register</Button>
+                        <Button variant="contained" color="primary" href="/login" onClick={handleLogin}>Log in</Button>
+                        <Button variant="outlined" href="/register">Register</Button>
                     </Stack>
                 </Container>
             </Box>

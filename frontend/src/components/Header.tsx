@@ -16,7 +16,7 @@ const Header: React.FC = () => {
                 <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
                     <TextSnippet color="secondary"/>
                     <Typography variant="h6" color="secondary">
-                        Notes App
+                        NoteMaster
                     </Typography>
 
                     <Link href="/notes/user-notes" passHref>
@@ -30,7 +30,9 @@ const Header: React.FC = () => {
 
                 <Link href="/login" passHref>
                     <Button color="secondary" onClick={handleLogout}>
+                        <Typography color="secondary">
                             Logout
+                        </Typography>
                     </Button>
                 </Link>
             </Toolbar>

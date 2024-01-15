@@ -1,30 +1,46 @@
-import React from 'react';
-import {Card, CardContent, Typography, Button, CardActions} from '@mui/material';
+import React, {useState} from 'react';
+import {Card, CardContent, Typography, Button, CardActions, Box} from '@mui/material';
 import Link from 'next/link';
+import {NoteDto} from "@/types/note/noteTypes";
+import NoteForm from "@/components/NoteForm";
+import NoteDetails from "@/components/NoteDetails";
+import {deleteNote} from "@/services/noteService";
 
-interface NoteCardProps {
-    id: number;
-    title: string;
-    content: string;
-}
+const NoteCard: React.FC<NoteDto> = (note) => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-const NoteCard: React.FC<NoteCardProps> = ({ id, title, content }) => {
+    const handleOpenNoteDetails = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleCloseNoteDetails = () => {
+        setIsDialogOpen(false);
+    };
+
+    const handleDeleteNote = () => {
+        deleteNote(note.id!)
+            .then(() => console.log('Deleted note:', note.id))
+            .catch((error) => console.error('Error deleting note:', error));
+    }
+
     return (
         <Card
             sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
         >
             <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="h2">
-                    {title}
+                    {note.title}
                 </Typography>
                 <Typography>
-                    {content}
+                    {note.content}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Link href={`/notes/${id}`}>
-                    <Button size="small">View</Button>
-                </Link>
+                <Box sx={{pt: 4}}>
+                    <Button onClick={handleOpenNoteDetails}>View</Button>
+                    <Button onClick={handleDeleteNote}>Delete</Button>
+                    <NoteDetails id={note.id!} open={isDialogOpen} onClose={handleCloseNoteDetails}/>
+                </Box>
             </CardActions>
         </Card>
     );
