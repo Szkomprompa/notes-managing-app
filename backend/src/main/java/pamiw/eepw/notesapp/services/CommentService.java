@@ -15,6 +15,7 @@ import pamiw.eepw.notesapp.repositories.NoteRepository;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -37,7 +38,7 @@ public class CommentService {
         Comment entity = commentMapper.toEntity(commentDto);
         entity.setNote(note);
 
-        note.getComments().add(entity);
+        commentRepository.findAllByNoteId(note.getId()).add(entity);
 
         noteRepository.saveAndFlush(note);
         entity = commentRepository.saveAndFlush(entity);
@@ -45,9 +46,22 @@ public class CommentService {
         return commentMapper.toDto(entity);
     }
 
+//    public void deleteById(Long id) {
+//        Comment entity = commentMapper.toEntity(findById(id));
+//        entity.getNote().getComments().remove(entity);
+//        commentRepository.deleteById(id);
+//    }
+
     public void deleteById(Long id) {
-        Comment entity = commentMapper.toEntity(findById(id));
-        entity.getNote().getComments().remove(entity);
+        Comment comment = commentMapper.toEntity(findById(id));
+
+        // Explicitly fetch the associated note
+        Note note = comment.getNote();
+        if (note != null) {
+            note.getComments().remove(comment);
+            noteRepository.saveAndFlush(note);
+        }
+
         commentRepository.deleteById(id);
     }
 
@@ -71,13 +85,13 @@ public class CommentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found"));
     }
 
-    public Collection<CommentDto> findAll() {
+    public List<CommentDto> findAll() {
         return commentRepository.findAll().stream()
                 .map(commentMapper::toDto)
                 .toList();
     }
 
-    public Collection<CommentDto> findAllByNoteId(Long noteId) {
+    public List<CommentDto> findAllByNoteId(Long noteId) {
         return commentRepository.findAllByNoteId(noteId).stream()
                 .map(commentMapper::toDto)
                 .toList();

@@ -17,6 +17,7 @@ import pamiw.eepw.notesapp.dto.Views;
 import pamiw.eepw.notesapp.services.CommentService;
 
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -97,7 +98,7 @@ public class CommentController {
             tags = {"get"})
     @GetMapping
     @JsonView(Views.Get.class)
-    public Collection<CommentDto> findAll() {
+    public List<CommentDto> findAll() {
         log.debug("Find all comments");
         return commentService.findAll();
     }
@@ -108,7 +109,7 @@ public class CommentController {
             tags = {"get"})
     @GetMapping("/note/{noteId}")
     @JsonView(Views.Get.class)
-    public Collection<CommentDto> findAllByNoteId(
+    public List<CommentDto> findAllByNoteId(
             @Parameter(description = "Note Id.", example = "1")
             @PathVariable Long noteId) {
         log.debug("Find all comments by note id: {}", noteId);

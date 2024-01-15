@@ -17,6 +17,7 @@ import pamiw.eepw.notesapp.dto.Views;
 import pamiw.eepw.notesapp.services.NoteService;
 
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -32,7 +33,7 @@ public class NoteController {
             tags = {"get"})
     @GetMapping
     @JsonView(Views.Get.class)
-    public Collection<NoteDto> findAll() {
+    public List<NoteDto> findAll() {
         log.debug("Find all notes");
         return noteService.findAll();
     }
