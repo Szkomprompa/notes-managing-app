@@ -21,7 +21,9 @@ public class Note {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(length = 512)
     private String title;
+    @Column(length = 10000)
     private String content;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "note", fetch = FetchType.EAGER)

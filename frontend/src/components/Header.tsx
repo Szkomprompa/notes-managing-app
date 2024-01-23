@@ -23,18 +23,18 @@ const Header: React.FC = () => {
                         <Button color="secondary">Your Notes</Button>
                     </Link>
 
-                    <Link href="/notes/community-notes" passHref>
-                        <Button color="secondary">Community Notes</Button>
-                    </Link>
+                    {/*<Link href="/notes/community-notes" passHref>*/}
+                    {/*    <Button color="secondary">Community Notes</Button>*/}
+                    {/*</Link>*/}
                 </Box>
 
-                <Link href="/login" passHref>
-                    <Button color="secondary" onClick={handleLogout}>
-                        <Typography color="secondary">
-                            Logout
-                        </Typography>
-                    </Button>
-                </Link>
+                {/*<Link href="/login" passHref>*/}
+                {/*    <Button color="secondary" onClick={handleLogout}>*/}
+                {/*        <Typography color="secondary">*/}
+                {/*            Logout*/}
+                {/*        </Typography>*/}
+                {/*    </Button>*/}
+                {/*</Link>*/}
             </Toolbar>
         </AppBar>
     );

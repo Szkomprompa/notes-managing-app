@@ -2,7 +2,7 @@ import {ThemeProvider} from "@mui/material";
 import theme from "@/app/theme";
 
 export const metadata = {
-  title: 'Notemaster',
+  title: 'NoteMaster',
   description: 'App for taking notes and sharing them with the community',
 }
 

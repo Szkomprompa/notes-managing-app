@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {CommentDto, CommentDtoWithoutId} from "@/types/comment/commentDto";
-import {Box, Button, Container, Stack, TextField, Typography} from "@mui/material";
-import {createComment, getCommentsByNoteId} from "@/services/commentService";
+import {Box, Button, Container, IconButton, Stack, TextField, Typography} from "@mui/material";
+import {createComment, deleteComment, getCommentsByNoteId} from "@/services/commentService";
+import {Delete} from "@mui/icons-material";
 
 const NoteDetails = (props: {noteId: number}) => {
-    const [comments, setComments] = useState<CommentDto[] | null>(null);
+    const [comments, setComments] = useState<CommentDto[]>([]);
     const [newCommentContent, setNewCommentContent] = useState('');
 
     const handleAddComment = () => {
@@ -18,6 +19,16 @@ const NoteDetails = (props: {noteId: number}) => {
                 console.log('Created comment:', createdComment);
             }).catch((error) => {
             console.error('Error creating comment:', error.request.data);
+        });
+    };
+
+    const handleDeleteComment = (id: number) => {
+        deleteComment(id)
+            .then(() => {
+                setComments(comments?.filter((comment) => comment.id !== id));
+                console.log('Deleted comment:', id);
+            }).catch((error) => {
+            console.error('Error deleting comment:', error.request.data);
         });
     };
 
@@ -42,8 +53,11 @@ const NoteDetails = (props: {noteId: number}) => {
             </Typography>
             <Stack spacing={2} sx={{py: '5'}}>
                 {comments?.map((comment) => (
-                    <Box bgcolor="#ff9800" borderRadius="16px" key={comment.id}>
-                        <Typography align="left" variant="body1" sx={{pl: 2}}> {comment.content} </Typography>
+                    <Box sx={{display: 'flex', flex: 1}} bgcolor="#ff9800" minHeight="10" borderRadius="16px" key={comment.id} justifyItems="center">
+                        <Typography align="left" variant="body1" sx={{pl: 2, py: 1, flex: 1}} justifyContent="center"> {comment.content} </Typography>
+                        <IconButton onClick={() => handleDeleteComment(comment.id)} aria-label="delete" sx={{ mr: 2, maxHeight: '50%'}} >
+                            <Delete color="secondary"/>
+                        </IconButton>
                     </Box>
                 ))}
             </Stack>

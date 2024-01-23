@@ -18,6 +18,7 @@ public class Comment {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(length = 1000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

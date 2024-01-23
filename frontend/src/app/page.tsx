@@ -17,10 +17,6 @@ import NoteCard from "@/components/NoteCard";
 
 const Home: React.FC = () => {
 
-    const handleLogin = () => {
-        console.log('Login');
-    }
-
     return (
         <Container>
             <Header />
@@ -39,10 +35,11 @@ const Home: React.FC = () => {
                         color="text.primary"
                         gutterBottom
                     >
-                        Notes App
+                        NoteMaster
                     </Typography>
                     <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                        In this app you can create notes and share them with the community.
+                        In this app you can create and store notes with comments.
+                        {/*In this app you can create notes and share them with the community.*/}
                     </Typography>
                     <Stack
                         sx={{ pt: 4 }}
@@ -50,8 +47,9 @@ const Home: React.FC = () => {
                         spacing={2}
                         justifyContent="center"
                     >
-                        <Button variant="contained" color="primary" href="/login" onClick={handleLogin}>Log in</Button>
-                        <Button variant="outlined" href="/register">Register</Button>
+                        <Button variant="contained" color="primary" href="/notes/user-notes">Your Notes</Button>
+                        {/*<Button variant="contained" color="primary" href="/login" onClick={handleLogin}>Log in</Button>*/}
+                        {/*<Button variant="outlined" href="/register">Register</Button>*/}
                     </Stack>
                 </Container>
             </Box>
